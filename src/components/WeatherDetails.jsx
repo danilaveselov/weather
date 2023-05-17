@@ -1,14 +1,15 @@
 import React from "react";
-import {
-  UilArrowUp,
-  UilArrowDown,
-  UilTemperature,
-  UilTear,
-  UilWind,
-  UilSun,
-  UilSunset,
-} from "@iconscout/react-unicons";
-import { formatToLocalTime, getIconUrl } from "../services/weatherService";
+
+import { getIconUrl, formatToLocalTime } from "../services/weatherService";
+import { Box, Grid, Stack, Typography } from "@mui/material";
+
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import WbTwilightIcon from "@mui/icons-material/WbTwilight";
+import WaterDropIcon from "@mui/icons-material/WaterDrop";
+import WindPowerIcon from "@mui/icons-material/WindPower";
 
 const WeatherDetails = ({
   weather: {
@@ -26,70 +27,60 @@ const WeatherDetails = ({
   },
 }) => {
   return (
-    <div>
-      <div className="flex items-center justify-center py-6 text-xl text-cyan-300">
-        <p>{details}</p>
-      </div>
-      <div className="flex flex-row items-center justify-between text-white py-3">
-        <img src={getIconUrl(icon)} alt="" className="w-20" />
-        <p className="text-5xl">{`${temp.toFixed()}°`}</p>
-        <div>
-          <div className="flex flex-col space-y-2">
-            <div className="flex font-light text-sm items-center">
-              <UilTemperature size={18} className="mr-1" />
-              Feels like:
-              <span className="font-medium ml-1">{`${feels_like.toFixed()}°`}</span>
-            </div>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <div className="flex font-light text-sm items-center">
-              <UilTear size={18} className="mr-1" />
-              Humidity:
-              <span className="font-medium ml-1">{`${humidity}%`}</span>
-            </div>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <div className="flex font-light text-sm items-center">
-              <UilWind size={18} className="mr-1" />
-              Wind speed:
-              <span className="font-medium ml-1">{`${speed.toFixed()} km/h`}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-row items-center justify-center space-x-2 text-white text-sm py-3">
-        <UilSun />
-        <p className="font-light">
-          Rise:
-          <span className="font-medium ml-1">
-            {formatToLocalTime(sunrise, timezone, "hh:mm a")}
-          </span>
-        </p>
-        <p className="font-light">|</p>
-
-        <UilSunset />
-        <p className="font-light">
-          Set:
-          <span className="font-medium ml-1">
-            {formatToLocalTime(sunset, timezone, "hh:mm a")}
-          </span>
-        </p>
-        <p className="font-light">|</p>
-
-        <UilArrowUp />
-        <p className="font-light">
-          High:
-          <span className="font-medium ml-1">{`${temp_max.toFixed()}°`}</span>
-        </p>
-        <p className="font-light">|</p>
-
-        <UilArrowDown />
-        <p className="font-light">
-          Low:
-          <span className="font-medium ml-1">{`${temp_min.toFixed()}°`}</span>
-        </p>
-      </div>
-    </div>
+    <Box>
+      <Typography variant="h6" align="center" color="primary">
+        {details}
+      </Typography>
+      <Grid container justify="space-around" spacing={8}>
+        <Grid item xs>
+          <img src={getIconUrl(icon)} alt="Weather Icon" />
+        </Grid>
+        <Grid item xs>
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="inherit"
+          >
+            {`${temp.toFixed()}°`}
+          </Typography>
+        </Grid>
+        <Grid item xs>
+          <Stack gap={1}>
+            <Typography display="flex" color="text.secondary">
+              <DeviceThermostatIcon />
+              Feels like: {feels_like.toFixed()}°
+            </Typography>
+            <Typography display="flex" color="text.secondary">
+              <WaterDropIcon />
+              Humidity: {humidity}%
+            </Typography>
+            <Typography display="flex" color="text.secondary">
+              <WindPowerIcon />
+              Wind speed: {speed.toFixed()} km/h
+            </Typography>
+          </Stack>
+        </Grid>
+      </Grid>
+      <Stack sx={{ mt: 4 }} direction="row" justifyContent="center" gap={4}>
+        <Typography display="flex" color="text.secondary">
+          <WbSunnyIcon />
+          Rise: {formatToLocalTime(sunrise, timezone, "hh:mm a")}
+        </Typography>
+        <Typography display="flex" color="text.secondary">
+          <WbTwilightIcon />
+          Set: {formatToLocalTime(sunset, timezone, "hh:mm a")}
+        </Typography>
+        <Typography display="flex" color="text.secondary">
+          <ArrowUpwardIcon />
+          High: {`${temp_max.toFixed()}°`}
+        </Typography>
+        <Typography display="flex" color="text.secondary">
+          <ArrowDownwardIcon />
+          Low: {`${temp_min.toFixed()}°`}
+        </Typography>
+      </Stack>
+    </Box>
   );
 };
 

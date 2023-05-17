@@ -1,18 +1,22 @@
 import React from "react";
 import { formatToLocalTime } from "../services/weatherService";
+import { Typography, Box } from "@mui/material";
 
 const TimeLocation = ({ weather: { dt, timezone, name, country } }) => {
   return (
-    <div>
-      <div className="flex items-center justify-center my-3">
-        <p className="text-white text-3xl font-medium">{`${name}, ${country}`}</p>
-      </div>
-      <div className="flex items-center justify-center my-6">
-        <p className="text-white text-xl font-extralight">
-          {formatToLocalTime(dt, timezone)}
-        </p>
-      </div>
-    </div>
+    <Box sx={{ mt: 6 }}>
+      <Typography
+        component="h1"
+        variant="h2"
+        align="center"
+        color="text.primary"
+      >
+        {name}, {country}
+      </Typography>
+      <Typography variant="h5" align="center" color="text.secondary" paragraph>
+        {formatToLocalTime(dt, timezone)}
+      </Typography>
+    </Box>
   );
 };
 

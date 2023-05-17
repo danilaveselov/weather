@@ -1,26 +1,33 @@
 import React from "react";
 import { getIconUrl } from "../services/weatherService";
+import { Box, Stack, Typography } from "@mui/material";
 
 function Forecast({ title, items }) {
   return (
-    <div>
-      <div className="flex items-center justify-start mt-6 ">
-        <p className="text-white font-medium uppercase">{title}</p>
-      </div>
-      <hr className="my-2" />
-      <div className="flex flex-row items-center justify-between text-white">
+    <Box sx={{ mt: 8 }}>
+      <Typography variant="h6" align="center" color="primary">
+        {title}
+      </Typography>
+      <Stack
+        sx={{ mt: 4 }}
+        direction="row"
+        justifyContent="center"
+        textAlign="center"
+        gap={4}
+      >
         {items.map((item, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center justify-center"
-          >
-            <p className="font-light text-sm">{item.title}</p>
-            <img src={getIconUrl(item.icon)} alt="" className="w-12 my-1" />
-            <p className="font-medium">{`${item.temp.toFixed()}°`}</p>
-          </div>
+          <Stack key={index} gap={1}>
+            <Typography color="text.secondary">{item.title}</Typography>
+            <Box>
+              <img src={getIconUrl(item.icon)} alt="Weather Icon" />
+            </Box>
+            <Typography color="text.secondary">
+              {item.temp.toFixed()}°
+            </Typography>
+          </Stack>
         ))}
-      </div>
-    </div>
+      </Stack>
+    </Box>
   );
 }
 
