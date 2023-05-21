@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Box, Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 
 import Navbar from "./components/Navbar";
 import TimeLocation from "./components/TimeLocation";
@@ -27,13 +27,16 @@ function App() {
   const [weatherHistory, setWeatherHistory] = useState([]);
 
   useEffect(() => {
-    const historyCollectionRef = collection(db, "history");
     // Adding a new record to the firebase db
     const recordWeatherHistory = async (weatherData) => {
-      await addDoc(historyCollectionRef, weatherData);
+      const uniqueId = weatherData.country + weatherData.name + weatherData.dt;
+      await setDoc(doc(db, "history", uniqueId), weatherData).catch((err) => {
+        console.log(err);
+      });
     };
     // Getting history data from the firebase db
     const getWeatherHistory = async () => {
+      const historyCollectionRef = collection(db, "history");
       const history = await getDocs(historyCollectionRef);
       const formattedHistory = history.docs.map((doc) => ({
         ...doc.data(),
@@ -52,12 +55,17 @@ function App() {
         setWeather(data);
       });
     };
-    console.log(process.env);
     fetchWeather();
   }, [query, units]);
 
   return (
-    <Box height={2000} sx={{ backgroundColor: "#c3daff" }}>
+    <Box
+      sx={{
+        backgroundColor: "#c3daff",
+        flex: 1,
+        minHeight: "125vh",
+      }}
+    >
       <CssBaseline />
       <Navbar setQuery={setQuery} units={units} setUnits={setUnits} />
       <Container maxWidth="lg">
