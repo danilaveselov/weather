@@ -2,13 +2,13 @@ import React from "react";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import { getIconUrl, formatToLocalTime } from "../services/weatherService";
 import {
-  ArrowDownwardIcon,
-  ArrowUpwardIcon,
-  DeviceThermostatIcon,
-  WbSunnyIcon,
-  WbTwilightIcon,
-  WaterDropIcon,
-  WindPowerIcon,
+  ArrowDownward,
+  ArrowUpward,
+  DeviceThermostat,
+  WbSunny,
+  WbTwilight,
+  WaterDrop,
+  WindPower,
 } from "@mui/icons-material";
 
 const WeatherDetails = ({
@@ -48,15 +48,15 @@ const WeatherDetails = ({
         <Grid item xs>
           <Stack gap={1}>
             <Typography display="flex" color="text.secondary">
-              <DeviceThermostatIcon />
+              <DeviceThermostat />
               Feels like: {feels_like.toFixed()}°
             </Typography>
             <Typography display="flex" color="text.secondary">
-              <WaterDropIcon />
+              <WaterDrop />
               Humidity: {humidity}%
             </Typography>
             <Typography display="flex" color="text.secondary">
-              <WindPowerIcon />
+              <WindPower />
               Wind speed: {speed.toFixed()} km/h
             </Typography>
           </Stack>
@@ -64,19 +64,19 @@ const WeatherDetails = ({
       </Grid>
       <Stack sx={{ mt: 4 }} direction="row" justifyContent="center" gap={4}>
         <Typography display="flex" color="text.secondary">
-          <WbSunnyIcon />
+          <WbSunny />
           Rise: {formatToLocalTime(sunrise, timezone, "hh:mm a")}
         </Typography>
         <Typography display="flex" color="text.secondary">
-          <WbTwilightIcon />
+          <WbTwilight />
           Set: {formatToLocalTime(sunset, timezone, "hh:mm a")}
         </Typography>
         <Typography display="flex" color="text.secondary">
-          <ArrowUpwardIcon />
+          <ArrowUpward />
           High: {`${temp_max.toFixed()}°`}
         </Typography>
         <Typography display="flex" color="text.secondary">
-          <ArrowDownwardIcon />
+          <ArrowDownward />
           Low: {`${temp_min.toFixed()}°`}
         </Typography>
       </Stack>
