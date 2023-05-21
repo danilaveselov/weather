@@ -1,15 +1,15 @@
 import React from "react";
-
-import { getIconUrl, formatToLocalTime } from "../services/weatherService";
 import { Box, Grid, Stack, Typography } from "@mui/material";
-
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
-import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import WbTwilightIcon from "@mui/icons-material/WbTwilight";
-import WaterDropIcon from "@mui/icons-material/WaterDrop";
-import WindPowerIcon from "@mui/icons-material/WindPower";
+import { getIconUrl, formatToLocalTime } from "../services/weatherService";
+import {
+  ArrowDownwardIcon,
+  ArrowUpwardIcon,
+  DeviceThermostatIcon,
+  WbSunnyIcon,
+  WbTwilightIcon,
+  WaterDropIcon,
+  WindPowerIcon,
+} from "@mui/icons-material";
 
 const WeatherDetails = ({
   weather: {
