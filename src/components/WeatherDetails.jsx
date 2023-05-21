@@ -33,7 +33,9 @@ const WeatherDetails = ({
       </Typography>
       <Grid container justify="space-around" spacing={8}>
         <Grid item xs>
-          <img src={getIconUrl(icon)} alt="Weather Icon" />
+          <Box align="right">
+            <img src={getIconUrl(icon)} alt="Weather Icon" />
+          </Box>
         </Grid>
         <Grid item xs>
           <Typography
