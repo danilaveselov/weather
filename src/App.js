@@ -48,12 +48,16 @@ function App() {
     const fetchWeather = async () => {
       const message = query.q ? query.q : "your location";
       toast.info("Getting the data for " + message);
-      await getFormattedWeatherData({ ...query, units }).then((data) => {
-        toast.success(`Data received for ${data.name}, ${data.country}`);
-        recordWeatherHistory(data);
-        getWeatherHistory();
-        setWeather(data);
-      });
+      await getFormattedWeatherData({ ...query, units })
+        .then((data) => {
+          toast.success(`Data received for ${data.name}, ${data.country}`);
+          recordWeatherHistory(data);
+          getWeatherHistory();
+          setWeather(data);
+        })
+        .catch((err) => {
+          toast.error("Failed to fetch data 😓");
+        });
     };
     fetchWeather();
   }, [query, units]);
