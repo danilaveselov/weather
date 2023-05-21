@@ -1,34 +1,58 @@
+import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Box, Container } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { collection, getDocs, addDoc } from "firebase/firestore";
+
 import Navbar from "./components/Navbar";
 import TimeLocation from "./components/TimeLocation";
 import WeatherDetails from "./components/WeatherDetails";
 import Forecast from "./components/Forecast";
+import HistoryTable from "./components/HistoryTable";
+
 import getFormattedWeatherData from "./services/weatherService";
-import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { db } from "./firebase-config";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { Container, Box } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
 
 function App() {
   const [query, setQuery] = useState({ q: "London" });
   const [units, setUnits] = useState("metric");
   const [weather, setWeather] = useState(null);
+  // weatherHistory useState for displaying in HistoryTable component
+  const [weatherHistory, setWeatherHistory] = useState([]);
 
   useEffect(() => {
+    const historyCollectionRef = collection(db, "history");
+    // Adding a new record to the firebase db
+    const recordWeatherHistory = async (weatherData) => {
+      await addDoc(historyCollectionRef, weatherData);
+    };
+    // Getting history data from the firebase db
+    const getWeatherHistory = async () => {
+      const history = await getDocs(historyCollectionRef);
+      const formattedHistory = history.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setWeatherHistory(formattedHistory);
+    };
+    // Fetching the weather from OpenWeather, recording it and setting the required useStates
     const fetchWeather = async () => {
       const message = query.q ? query.q : "your location";
       toast.info("Getting the data for " + message);
       await getFormattedWeatherData({ ...query, units }).then((data) => {
         toast.success(`Data received for ${data.name}, ${data.country}`);
+        recordWeatherHistory(data);
+        getWeatherHistory();
         setWeather(data);
       });
     };
-
+    console.log(process.env);
     fetchWeather();
   }, [query, units]);
 
@@ -36,7 +60,7 @@ function App() {
     <Box height={2000} sx={{ backgroundColor: "#c3daff" }}>
       <CssBaseline />
       <Navbar setQuery={setQuery} units={units} setUnits={setUnits} />
-      <Container maxWidth="sm">
+      <Container maxWidth="lg">
         {weather && (
           <div>
             <TimeLocation weather={weather} />
@@ -45,8 +69,16 @@ function App() {
             <Forecast title="Daily Forecast" items={weather.daily} />
           </div>
         )}
-        <ToastContainer autoclose={1000} theme="colored" newestOnTop={true} />
       </Container>
+      <Container maxWidth="lg">
+        <HistoryTable weatherHistory={weatherHistory} />
+      </Container>
+      <ToastContainer
+        autoclose={1000}
+        theme="colored"
+        newestOnTop={true}
+        draggable={false}
+      />
     </Box>
   );
 }
