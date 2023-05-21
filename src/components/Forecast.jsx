@@ -1,6 +1,6 @@
 import React from "react";
-import { getIconUrl } from "../services/weatherService";
 import { Box, Stack, Typography } from "@mui/material";
+import { getIconUrl } from "../services/weatherService";
 
 function Forecast({ title, items }) {
   return (
@@ -14,6 +14,8 @@ function Forecast({ title, items }) {
         justifyContent="center"
         textAlign="center"
         gap={4}
+        useFlexGap
+        flexWrap="wrap"
       >
         {items.map((item, index) => (
           <Stack key={index} gap={1}>
