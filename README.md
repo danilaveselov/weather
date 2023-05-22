@@ -1,10 +1,10 @@
 # React Weather Application
 
-![Screenshot](weatherApp.png)
+<!-- ![Screenshot](weatherApp.png) -->
 
 ## Overview
 
-This weather app is built with React, Tailwind, and OpenWeather API to provide you with accurate and up-to-date weather information. This app allows you to easily access weather data by simply searching for a city or using your current location.
+This weather app is built with React, Material UI, and OpenWeather API to provide you with accurate and up-to-date weather information. This app allows you to easily access weather data by simply searching for a city or using your current location.
 
 ## Available Scripts
 
