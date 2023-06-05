@@ -8,48 +8,56 @@ export const useApp = () => {
     const [query, setQuery] = useState({ q: "London" });
     const [units, setUnits] = useState("metric");
     const [weather, setWeather] = useState(null);
-
-    // weatherHistory useState for displaying in HistoryTable component
     const [weatherHistory, setWeatherHistory] = useState([]);
 
     useEffect(() => {
-        // Adding a new record to the firebase db
-        const recordWeatherHistory = async (weatherData) => {
+        const recordWeatherHistory = (weatherData) => {
             const uniqueId =
                 weatherData.country + weatherData.name + weatherData.dt;
-            await setDoc(doc(db, "history", uniqueId), weatherData).catch(
-                (err) => {
-                    console.log(err);
-                }
-            );
+
+            setDoc(doc(db, "history", uniqueId), weatherData).catch((err) => {
+                console.log(err);
+            });
         };
-        // Getting history data from the firebase db
-        const getWeatherHistory = async () => {
+
+        const getWeatherHistory = () => {
             const historyCollectionRef = collection(db, "history");
-            const history = await getDocs(historyCollectionRef);
-            const formattedHistory = history.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            setWeatherHistory(formattedHistory);
+
+            getDocs(historyCollectionRef)
+                .then((result) => {
+                    const formattedHistory = result.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }));
+
+                    setWeatherHistory(formattedHistory);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         };
-        // Fetching the weather from OpenWeather, recording it and setting the required useStates
-        const fetchWeather = async () => {
+
+        const fetchWeather = () => {
             const message = query.q ? query.q : "your location";
+
             toast.info("Getting the data for " + message);
-            await getFormattedWeatherData({ ...query, units })
+
+            getFormattedWeatherData({ ...query, units })
                 .then((data) => {
+                    getWeatherHistory();
+                    recordWeatherHistory(data);
+                    setWeather(data);
+
                     toast.success(
                         `Data received for ${data.name}, ${data.country}`
                     );
-                    recordWeatherHistory(data);
-                    getWeatherHistory();
-                    setWeather(data);
                 })
                 .catch((err) => {
                     toast.error("Failed to fetch data 😓");
+                    console.log(err);
                 });
         };
+
         fetchWeather();
     }, [query, units]);
 
