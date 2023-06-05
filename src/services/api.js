@@ -9,10 +9,10 @@ export const getWeatherData = (infoType, params) => {
 
     return axios
         .get(url)
-        .then(function (response) {
-            console.log(response);
+        .then((response) => {
+            return response.data;
         })
-        .catch(function (error) {
+        .catch((error) => {
             console.log(error);
         });
 };

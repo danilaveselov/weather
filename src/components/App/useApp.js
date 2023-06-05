@@ -10,55 +10,51 @@ export const useApp = () => {
     const [weather, setWeather] = useState(null);
     const [weatherHistory, setWeatherHistory] = useState([]);
 
-    useEffect(() => {
-        const recordWeatherHistory = (weatherData) => {
-            const uniqueId =
-                weatherData.country + weatherData.name + weatherData.dt;
+    const recordWeatherHistory = (weatherData) => {
+        const uniqueId =
+            weatherData.country + weatherData.name + weatherData.dt;
 
-            setDoc(doc(db, "history", uniqueId), weatherData).catch((err) => {
+        setDoc(doc(db, "history", uniqueId), weatherData).catch((err) => {
+            console.log(err);
+        });
+    };
+
+    const getWeatherHistory = () => {
+        const historyCollectionRef = collection(db, "history");
+
+        getDocs(historyCollectionRef)
+            .then((result) => {
+                const formattedHistory = result.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+
+                setWeatherHistory(formattedHistory);
+            })
+            .catch((err) => {
                 console.log(err);
             });
-        };
+    };
 
-        const getWeatherHistory = () => {
-            const historyCollectionRef = collection(db, "history");
+    useEffect(() => {
+        const message = query.q ? query.q : "your location";
 
-            getDocs(historyCollectionRef)
-                .then((result) => {
-                    const formattedHistory = result.docs.map((doc) => ({
-                        ...doc.data(),
-                        id: doc.id,
-                    }));
+        toast.info("Getting the data for " + message);
 
-                    setWeatherHistory(formattedHistory);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
+        getFormattedWeatherData({ ...query, units })
+            .then((data) => {
+                getWeatherHistory();
+                recordWeatherHistory(data);
+                setWeather(data);
 
-        const fetchWeather = () => {
-            const message = query.q ? query.q : "your location";
-
-            toast.info("Getting the data for " + message);
-
-            getFormattedWeatherData({ ...query, units })
-                .then((data) => {
-                    getWeatherHistory();
-                    recordWeatherHistory(data);
-                    setWeather(data);
-
-                    toast.success(
-                        `Data received for ${data.name}, ${data.country}`
-                    );
-                })
-                .catch((err) => {
-                    toast.error("Failed to fetch data 😓");
-                    console.log(err);
-                });
-        };
-
-        fetchWeather();
+                toast.success(
+                    `Data received for ${data.name}, ${data.country}`
+                );
+            })
+            .catch((err) => {
+                toast.error("Failed to fetch data 😓");
+                console.log(err);
+            });
     }, [query, units]);
 
     return {
