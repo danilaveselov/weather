@@ -1,27 +1,14 @@
-import { Box, Container } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import CssBaseline from "@mui/material/CssBaseline";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { getFormattedWeatherData } from "../../services/utils";
+import { db } from "../../firebase-config";
 
-import { Navbar } from "./components/Navbar";
-import { TimeLocation } from "./components/TimeLocation";
-import { WeatherDetails } from "./components/WeatherDetails";
-import { Forecast } from "./components/Forecast";
-import { HistoryTable } from "./components/HistoryTable";
-import { getFormattedWeatherData } from "./services/utils";
-import { db } from "./firebase-config";
-
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
-export const App = () => {
+export const useApp = () => {
     const [query, setQuery] = useState({ q: "London" });
     const [units, setUnits] = useState("metric");
     const [weather, setWeather] = useState(null);
+
     // weatherHistory useState for displaying in HistoryTable component
     const [weatherHistory, setWeatherHistory] = useState([]);
 
@@ -66,41 +53,13 @@ export const App = () => {
         fetchWeather();
     }, [query, units]);
 
-    return (
-        <Box
-            sx={{
-                backgroundColor: "#c3daff",
-                flex: 1,
-                minHeight: "125vh",
-            }}
-        >
-            <CssBaseline />
-            <Navbar setQuery={setQuery} units={units} setUnits={setUnits} />
-            <Container maxWidth="lg">
-                {weather && (
-                    <div>
-                        <TimeLocation weather={weather} />
-                        <WeatherDetails weather={weather} />
-                        <Forecast
-                            title="Hourly Forecast"
-                            items={weather.hourly}
-                        />
-                        <Forecast
-                            title="Daily Forecast"
-                            items={weather.daily}
-                        />
-                    </div>
-                )}
-            </Container>
-            <Container maxWidth="lg">
-                <HistoryTable weatherHistory={weatherHistory} />
-            </Container>
-            <ToastContainer
-                autoclose={1000}
-                theme="colored"
-                newestOnTop={true}
-                draggable={false}
-            />
-        </Box>
-    );
+    return {
+        query,
+        setQuery,
+        units,
+        setUnits,
+        weather,
+        setWeather,
+        weatherHistory,
+    };
 };
