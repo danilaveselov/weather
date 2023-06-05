@@ -1,16 +1,15 @@
 import { DateTime } from "luxon";
 import { getWeatherData } from "./api";
 
-export const formatCurrentWeather = (data) => {
-    const {
-        coord: { lat, lon },
-        main: { temp, feels_like, temp_min, temp_max, humidity },
-        name,
-        dt,
-        sys: { country, sunrise, sunset },
-        weather,
-        wind: { speed },
-    } = data;
+export const formatCurrentWeather = ({
+    coord: { lat, lon },
+    main: { temp, feels_like, temp_min, temp_max, humidity },
+    name,
+    dt,
+    sys: { country, sunrise, sunset },
+    weather,
+    wind: { speed },
+}) => {
     const { main: details, icon } = weather[0];
 
     return {
@@ -33,9 +32,7 @@ export const formatCurrentWeather = (data) => {
     };
 };
 
-export const formatForecastWeather = (data) => {
-    let { timezone, daily, hourly } = data;
-
+export const formatForecastWeather = ({ timezone, daily, hourly }) => {
     daily = daily.slice(1, 6).map((d) => {
         return {
             title: formatToLocalTime(d.dt, timezone, "ccc"),
