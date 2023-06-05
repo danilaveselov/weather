@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { getIconUrl } from "../services/utils";
 
-export function Forecast({ title, items }) {
+export const Forecast = ({ title, items }) => {
     return (
         <Box sx={{ mt: 8 }}>
             <Typography variant="h6" align="center" color="primary">
@@ -36,4 +36,4 @@ export function Forecast({ title, items }) {
             </Stack>
         </Box>
     );
-}
+};

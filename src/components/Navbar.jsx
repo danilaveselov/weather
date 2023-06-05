@@ -11,7 +11,7 @@ import CloudIcon from "@mui/icons-material/Cloud";
 
 import { WeatherSearch } from "./WeatherSearch";
 
-export function Navbar({ setQuery, units, setUnits }) {
+export const Navbar = ({ setQuery, units, setUnits }) => {
     const cities = ["London", "Exeter", "Andover", "Edinburgh", "Glasgow"];
 
     return (
@@ -63,4 +63,4 @@ export function Navbar({ setQuery, units, setUnits }) {
             </Container>
         </AppBar>
     );
-}
+};

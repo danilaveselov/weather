@@ -18,7 +18,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
-export function App() {
+export const App = () => {
     const [query, setQuery] = useState({ q: "London" });
     const [units, setUnits] = useState("metric");
     const [weather, setWeather] = useState(null);
@@ -103,4 +103,4 @@ export function App() {
             />
         </Box>
     );
-}
+};
