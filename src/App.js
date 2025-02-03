@@ -8,7 +8,6 @@ import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import Navbar from "./components/Navbar";
 import TimeLocation from "./components/TimeLocation";
 import WeatherDetails from "./components/WeatherDetails";
-import Forecast from "./components/Forecast";
 import HistoryTable from "./components/HistoryTable";
 
 import getFormattedWeatherData from "./services/weatherService";
@@ -77,8 +76,6 @@ function App() {
           <div>
             <TimeLocation weather={weather} />
             <WeatherDetails weather={weather} />
-            <Forecast title="Hourly Forecast" items={weather.hourly} />
-            <Forecast title="Daily Forecast" items={weather.daily} />
           </div>
         )}
       </Container>
